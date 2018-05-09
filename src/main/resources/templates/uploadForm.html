@@ -7,10 +7,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
+    <title>Convertify!</title>
 </head>
-<body class="container">
+<body class="container mt-5">
 
 <div th:if="${message}">
     <h2 th:text="${message}"/>
@@ -18,10 +17,10 @@
 
 <div>
     <form method="POST" enctype="multipart/form-data" action="/">
-        <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Convert" /></td></tr>
-        </table>
+        <div>
+            File to upload:<input type="file" name="file" />
+            <input type="submit" value="Convert" />
+        </div>
     </form>
 </div>
 
@@ -29,7 +28,7 @@
     <ul>
         <li th:each="file : ${files}">
             <!--TODO: When deploying remove this ugly hard coded shit-->
-            <a th:href="${file}" th:text="${#strings.replace(file,'http://localhost:8080/files/','')}" />
+            <a th:href="${file}" th:text="${#strings.replace(file, 'http://localhost:8080/files/','')}" />
         </li>
     </ul>
 </div>
