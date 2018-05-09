@@ -25,4 +25,10 @@
 /.nb-gradle/
 
 ### Tesseract ###
-/tessdata
+tessdata
+
+### Logs ###
+myapplication.log
+
+### Uploads ###
+upload-dir
