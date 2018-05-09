@@ -1,8 +1,11 @@
 package com.example.demo;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +41,14 @@ public class FileUploadController {
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
 
+        LOGGER.info("-----------------------------------------------");
+
         model.addAttribute("files", storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
                         "serveFile", path.getFileName().toString()).build().toString())
                 .collect(Collectors.toList()));
+
+
 
         return "uploadForm";
     }
@@ -67,7 +74,9 @@ public class FileUploadController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully converted " + file.getOriginalFilename() + "!");
 
-        redirectAttributes.addFlashAttribute("converted", converted);
+        addToFile(converted, file.getOriginalFilename());
+
+        redirectAttributes.addFlashAttribute("outputFile", FilenameUtils.removeExtension(file.getOriginalFilename()) + ".txt");
 
         return "redirect:/";
     }
@@ -75,6 +84,21 @@ public class FileUploadController {
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
+    }
+
+    public void addToFile(String convertedText, String fileName) {
+
+        fileName = FilenameUtils.removeExtension(fileName);
+
+        File file = new File("/Users/KatCake/Desktop/demo/converted-dir/" + fileName + ".txt");
+
+        try {
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
+            writer.println(convertedText);
+            writer.close();
+        } catch (IOException ex) {
+            LOGGER.error("File" + fileName + "not created");
+        }
     }
 
 }

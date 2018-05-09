@@ -21,10 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+    private final Path convertedLocation;
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
+        this.convertedLocation = Paths.get(properties.getConvertedLocation());
     }
 
     @Override
@@ -50,12 +52,25 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+//    @Override
+//    public Stream<Path> loadAll() {
+//        try {
+//            return Files.walk(this.rootLocation, 1)
+//                .filter(path -> !path.equals(this.rootLocation))
+//                .map(this.rootLocation::relativize);
+//        }
+//        catch (IOException e) {
+//            throw new StorageException("Failed to read stored files", e);
+//        }
+//
+//    }
+
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
+            return Files.walk(this.convertedLocation, 1)
+                    .filter(path -> !path.equals(this.convertedLocation))
+                    .map(this.convertedLocation::relativize);
         }
         catch (IOException e) {
             throw new StorageException("Failed to read stored files", e);
@@ -63,9 +78,14 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
+//    @Override
+//    public Path load(String filename) {
+//        return rootLocation.resolve(filename);
+//    }
+
     @Override
     public Path load(String filename) {
-        return rootLocation.resolve(filename);
+        return convertedLocation.resolve(filename);
     }
 
     @Override
@@ -89,13 +109,16 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public void deleteAll() {
+
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+        FileSystemUtils.deleteRecursively(convertedLocation.toFile());
     }
 
     @Override
     public void init() {
         try {
             Files.createDirectories(rootLocation);
+            Files.createDirectories(convertedLocation);
         }
         catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
