@@ -69,7 +69,7 @@ public class FileUploadController {
         storageService.store(file);
 
         TesseractExample OCR = new TesseractExample();
-        String converted = OCR.converter("/Users/KatCake/Desktop/demo/upload-dir/" + file.getOriginalFilename());
+        String converted = OCR.converter("./upload-dir/" + file.getOriginalFilename());
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully converted " + file.getOriginalFilename() + "!");
@@ -90,7 +90,7 @@ public class FileUploadController {
 
         fileName = FilenameUtils.removeExtension(fileName);
 
-        File file = new File("/Users/KatCake/Desktop/demo/converted-dir/" + fileName + ".txt");
+        File file = new File("./converted-dir/" + fileName + ".txt");
 
         try {
             PrintWriter writer = new PrintWriter(file, "UTF-8");

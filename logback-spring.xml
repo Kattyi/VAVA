@@ -12,6 +12,7 @@
     </appender>
 
     <logger name="com.example.demo.FileUploadController">
+        <level value="DEBUG"/>
         <appender-ref ref="FILE" />
     </logger>
 
