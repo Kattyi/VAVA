@@ -40,12 +40,12 @@
 
 <div class="row mt-5">
     <div class="col-sm-10 offset-sm-1 text-center">
-        <h1 class="display-3 text-muted">Welcome to Convertify</h1>
+        <h1 class="display-3 text-muted" th:text="#{title}"></h1>
         <div class="info-form">
             <form method="POST" enctype="multipart/form-data" action="/" class="justify-content-center mt-5">
-                <div class="d-inline mr-1" style="max-width: 400px">
-                    <input type="file" name="file" style="margin: auto; max-width: 400px" class="form-control d-inline">
-                    <input type="submit" class="btn btn-success d-inline" th:value="#{convert}"/>
+                <div class="d-inline" style="max-width: 400px">
+                    <input type="file" name="file" style="margin: auto; max-width: 400px; padding: 0.5rem;" class="form-control d-inline mr-2">
+                    <input type="submit" class="btn btn-success btn-lg d-inline" th:value="#{convert}"/>
                 </div>
             </form>
         </div>
@@ -60,7 +60,7 @@
                 <tbody>
                 <tr th:each="file : ${files}">
                     <td th:text="${#strings.replace(file, 'http://localhost:8080/files/','')}" class="text-left"></td>
-                    <td><a th:href="${file}" class="btn btn-primary">download</a></td>
+                    <td><a th:href="${file}" class="btn btn-primary" th:text="#{download}"></a></td>
                 </tr>
                 </tbody>
             </table>
