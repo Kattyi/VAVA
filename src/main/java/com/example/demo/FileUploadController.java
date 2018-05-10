@@ -3,12 +3,14 @@ package com.example.demo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,10 @@ import com.example.demo.storage.StorageFileNotFoundException;
 import com.example.demo.storage.StorageService;
 
 @Controller
-public class FileUploadController {
+public class FileUploadController implements CommandLineRunner {
+
+    @Autowired
+    ConversionJdbcRepository repository;
 
     private final StorageService storageService;
     public final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
@@ -71,6 +76,13 @@ public class FileUploadController {
         TesseractExample OCR = new TesseractExample();
         String converted = OCR.converter("./upload-dir/" + file.getOriginalFilename());
 
+        repository.insert(new Conversion(
+                2,
+                new Timestamp(System.currentTimeMillis()),
+                file.getOriginalFilename(),
+                (int) file.getSize()
+        ));
+
         redirectAttributes.addFlashAttribute("message",
                 "You successfully converted " + file.getOriginalFilename() + "!");
 
@@ -99,6 +111,10 @@ public class FileUploadController {
         } catch (IOException ex) {
             LOGGER.error("File" + fileName + "not created");
         }
+    }
+
+    public void run(String...args) throws Exception {
+        LOGGER.info("Conversion id 1 -> {}", repository.findById(1));
     }
 
 }
