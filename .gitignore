@@ -28,7 +28,7 @@
 tessdata
 
 ### Logs ###
-myapplication.log
+logs
 
 ### Uploads ###
 upload-dir
