@@ -21,6 +21,13 @@ public class Conversion {
         this.size = size;
     }
 
+    public Conversion(Timestamp timestamp, String filename, Integer size) {
+        super();
+        this.timestamp = timestamp;
+        this.filename = filename;
+        this.size = size;
+    }
+
     public Integer getId() {
         return id;
     }

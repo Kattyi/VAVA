@@ -1,1 +1,1 @@
-INSERT INTO conversion VALUES (1, CURRENT_TIMESTAMP(), 'name', 128);
+INSERT INTO conversion VALUES (1, CURRENT_TIMESTAMP(), 'test', 128);

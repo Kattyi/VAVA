@@ -1,8 +1,8 @@
 CREATE TABLE conversion
 (
-  id integer not null,
+  id INTEGER NOT NULL AUTO_INCREMENT,
   timestamp TIMESTAMP,
   file_name VARCHAR(255),
   size INTEGER,
-  primary key(id)
+  PRIMARY KEY (id)
 );

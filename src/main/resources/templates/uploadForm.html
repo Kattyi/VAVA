@@ -8,30 +8,67 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <title>Convertify!</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption !== ''){
+                    window.location.replace('locale?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+
 </head>
 <body class="container mt-5">
 
-<div th:if="${message}">
-    <h2 th:text="${message}"/>
+<div th:if="${message}" class="alert alert-success" role="alert">
+    <div th:text="#{successMsg} + ' ' + ${message}" />
 </div>
 
-<div>
-    <form method="POST" enctype="multipart/form-data" action="/">
-        <div>
-            File to upload:<input type="file" name="file" />
-            <input type="submit" value="Convert" />
+<div class="row">
+    <div class="col text-right">
+        <select id="locales">
+            <option value="" th:text="#{lang.change}"></option>
+            <option value="en" th:text="#{lang.eng}"></option>
+            <option value="sk" th:text="#{lang.sk}"></option>
+        </select>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-sm-10 offset-sm-1 text-center">
+        <h1 class="display-3 text-muted">Welcome to Convertify</h1>
+        <div class="info-form">
+            <form method="POST" enctype="multipart/form-data" action="/" class="justify-content-center mt-5">
+                <div class="d-inline mr-1" style="max-width: 400px">
+                    <input type="file" name="file" style="margin: auto; max-width: 400px" class="form-control d-inline">
+                    <input type="submit" class="btn btn-success d-inline" th:value="#{convert}"/>
+                </div>
+            </form>
         </div>
-    </form>
+
+        <div class="mt-5">
+
+            <table class="table table-condensed">
+                <thead>
+                <col width="75%">
+                <col width="25%">
+                </thead>
+                <tbody>
+                <tr th:each="file : ${files}">
+                    <td th:text="${#strings.replace(file, 'http://localhost:8080/files/','')}" class="text-left"></td>
+                    <td><a th:href="${file}" class="btn btn-primary">download</a></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
 
-<div class="mt-5">
-    <ul>
-        <li th:each="file : ${files}">
-            <!--TODO: When deploying remove this ugly hard coded shit-->
-            <a th:href="${file}" th:text="${#strings.replace(file, 'http://localhost:8080/files/','')}" />
-        </li>
-    </ul>
-</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -33,10 +33,17 @@ public class ConversionJdbcRepository {
         }, new BeanPropertyRowMapper<Conversion>(Conversion.class));
     }
 
+//    public int insert(Conversion conversion) {
+//        return jdbcTemplate.update("insert into conversion (id, timestamp, file_name, size)" + "values(?, ?, ?, ?)",
+//                new Object[] {
+//                        conversion.getId(), conversion.getTimestamp(), conversion.getFilename(), conversion.getSize()
+//                });
+//    }
+
     public int insert(Conversion conversion) {
-        return jdbcTemplate.update("insert into conversion (id, timestamp, file_name, size)" + "values(?, ?, ?, ?)",
+        return jdbcTemplate.update("insert into conversion (timestamp, file_name, size)" + "values(?, ?, ?)",
                 new Object[] {
-                        conversion.getId(), conversion.getTimestamp(), conversion.getFilename(), conversion.getSize()
+                        conversion.getTimestamp(), conversion.getFilename(), conversion.getSize()
                 });
     }
 
